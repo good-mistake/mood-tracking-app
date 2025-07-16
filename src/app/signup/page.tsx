@@ -41,6 +41,8 @@ const Page = () => {
       } else {
         setError("Something went wrong.");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
