@@ -88,6 +88,7 @@ const Page = () => {
               id="Password"
               name="Password"
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
             />
           </label>{" "}
           {error && (
