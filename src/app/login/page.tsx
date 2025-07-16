@@ -9,7 +9,6 @@ import { login } from "../redux/user";
 import Lottie from "lottie-react";
 import Loadings from "../Loadings.json";
 import LoadingBtn from "../LoadingBtn.json";
-import axios from "axios";
 const Page = () => {
   const route = useRouter();
   const dispatch = useDispatch<AppDispatch>();
@@ -39,12 +38,14 @@ const Page = () => {
           route.push("/onBoarding");
         }, 500);
       }
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        const message = err.response?.data?.message || "Something went wrong.";
-        setError(message);
-      } else if (err instanceof Error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      if (typeof err === "string") {
+        setError(err);
+      } else if (err?.message) {
         setError(err.message);
+      } else if (err?.error) {
+        setError(err.error);
       } else {
         setError("Something went wrong.");
       }

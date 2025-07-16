@@ -82,12 +82,14 @@ const Page = () => {
       setTimeout(() => {
         route.push("/");
       }, 500);
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        const message = err.response?.data?.message || "Something went wrong.";
-        setError(message);
-      } else if (err instanceof Error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      if (typeof err === "string") {
+        setError(err);
+      } else if (err?.message) {
         setError(err.message);
+      } else if (err?.error) {
+        setError(err.error);
       } else {
         setError("Something went wrong.");
       }

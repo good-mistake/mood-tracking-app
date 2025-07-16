@@ -8,7 +8,6 @@ import Image from "next/image";
 import Lottie from "lottie-react";
 import Loadings from "../Loadings.json";
 import LoadingBtn from "../LoadingBtn.json";
-import axios from "axios";
 import { signup } from "../redux/user";
 const Page = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -31,17 +30,17 @@ const Page = () => {
       setTimeout(() => {
         route.push("/login");
       }, 500);
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        const message = err.response?.data?.message || "Something went wrong.";
-        setError(message);
-      } else if (err instanceof Error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      if (typeof err === "string") {
+        setError(err);
+      } else if (err?.message) {
         setError(err.message);
+      } else if (err?.error) {
+        setError(err.error);
       } else {
         setError("Something went wrong.");
       }
-    } finally {
-      setLoading(false);
     }
   };
 
