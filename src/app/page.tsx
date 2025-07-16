@@ -73,7 +73,7 @@ export default function Home() {
     }, millisTillMidnight);
 
     return () => clearTimeout(timeout);
-  }, [user, dispatch]);
+  }, [dispatch, name]);
 
   const moodConfig = {
     veryHappy: {

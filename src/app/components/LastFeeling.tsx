@@ -75,13 +75,13 @@ const LastFeeling: React.FC<Props> = ({ hasLoggedToday, data }) => {
       setQuote(randomQuote);
     }
   }, [lastEntry, moodQuotes]);
-
+  console.log(lastEntry);
   return (
     <div className={`lastEntry ${hasLoggedToday ? "show" : "hide"}`}>
       <div className="left">
         <h2>
           <span>I’m feeling</span>
-          {useMood || "—"}{" "}
+          {useMood.replace(/([a-z])([A-Z])/g, "$1 $2") || ""}{" "}
         </h2>
         {useMood && (
           <Image
