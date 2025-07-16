@@ -8,7 +8,7 @@ import Image from "next/image";
 import Lottie from "lottie-react";
 import Loadings from "../Loadings.json";
 import LoadingBtn from "../LoadingBtn.json";
-
+import axios from "axios";
 import { signup } from "../redux/user";
 const Page = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,7 +32,10 @@ const Page = () => {
         route.push("/login");
       }, 500);
     } catch (err) {
-      if (err instanceof Error) {
+      if (axios.isAxiosError(err)) {
+        const message = err.response?.data?.message || "Something went wrong.";
+        setError(message);
+      } else if (err instanceof Error) {
         setError(err.message);
       } else {
         setError("Something went wrong.");

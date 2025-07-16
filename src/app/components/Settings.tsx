@@ -35,7 +35,6 @@ const Settings: React.FC<SettingsProps> = ({
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState("");
-  console.log(fullName);
   const dispatch = useDispatch();
 
   const handleSave = async () => {

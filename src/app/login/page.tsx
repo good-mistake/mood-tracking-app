@@ -9,7 +9,7 @@ import { login } from "../redux/user";
 import Lottie from "lottie-react";
 import Loadings from "../Loadings.json";
 import LoadingBtn from "../LoadingBtn.json";
-
+import axios from "axios";
 const Page = () => {
   const route = useRouter();
   const dispatch = useDispatch<AppDispatch>();
@@ -40,7 +40,10 @@ const Page = () => {
         }, 500);
       }
     } catch (err) {
-      if (err instanceof Error) {
+      if (axios.isAxiosError(err)) {
+        const message = err.response?.data?.message || "Something went wrong.";
+        setError(message);
+      } else if (err instanceof Error) {
         setError(err.message);
       } else {
         setError("Something went wrong.");

@@ -82,9 +82,15 @@ const Page = () => {
       setTimeout(() => {
         route.push("/");
       }, 500);
-    } catch (e) {
-      console.error(e);
-      setError("Something went wrong.");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const message = err.response?.data?.message || "Something went wrong.";
+        setError(message);
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong.");
+      }
     } finally {
       setLoading(false);
     }
