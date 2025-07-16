@@ -101,7 +101,6 @@ export default function Home() {
       alt: "very sad",
     },
   };
-  console.log(user);
 
   const moodEntries = token
     ? user?.moodEntries || []
@@ -109,7 +108,6 @@ export default function Home() {
   const hasLoggedToday = moodEntries?.some((entry) => {
     return new Date(entry.createdAt).toDateString() === today;
   });
-  console.log(moodEntries);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
