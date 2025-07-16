@@ -108,9 +108,11 @@ body {
           position: relative;
           cursor: pointer;
           img {
-            margin-right: 10px;
-            @media (max-width: 600px) {
-              margin-right: 0;
+            &:first-child {
+              margin-right: 10px;
+              @media (max-width: 600px) {
+                margin-right: 5px;
+              }
             }
           }
           > div {
