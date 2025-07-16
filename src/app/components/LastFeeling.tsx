@@ -81,7 +81,7 @@ const LastFeeling: React.FC<Props> = ({ hasLoggedToday, data }) => {
       <div className="left">
         <h2>
           <span>I’m feeling</span>
-          Very Sad
+          {useMood}
         </h2>
         {useMood && (
           <Image
