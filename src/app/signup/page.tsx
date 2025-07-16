@@ -80,6 +80,7 @@ const Page = () => {
               id="email"
               onChange={(e) => setEmail(e.target.value)}
               name="email"
+              autoComplete="username"
             />
           </label>{" "}
           <label htmlFor="Password">

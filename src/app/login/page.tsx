@@ -86,6 +86,7 @@ const Page = () => {
               placeholder="name@mail.com"
               id="email"
               name="email"
+              autoComplete="username"
               onChange={(e) => setEmail(e.target.value)}
             />
           </label>{" "}
