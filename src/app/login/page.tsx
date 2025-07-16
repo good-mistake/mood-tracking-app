@@ -98,9 +98,7 @@ const Page = () => {
               autoComplete="current-password"
             />
           </label>
-          {error && (
-            <h6 className="error">Something happend. Please try again.</h6>
-          )}{" "}
+          {error && <h6 className="error">{error}</h6>}{" "}
           {success && <h6 className="success">{success}</h6>}
           <button type="submit" disabled={loading}>
             {loading ? (
