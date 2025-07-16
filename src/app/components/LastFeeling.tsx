@@ -17,7 +17,7 @@ const moodMap = {
   Neutral: 0,
   Happy: 1,
   VeryHappy: 2,
-  "": 12133,
+  "no mood yet": 12133,
 } as const;
 type MoodLabel = keyof typeof moodMap;
 
@@ -53,7 +53,7 @@ const LastFeeling: React.FC<Props> = ({ hasLoggedToday, data }) => {
     } else if (lastEntry.mood < -1.9) {
       moodLabel = "VerySad";
     } else {
-      moodLabel = "";
+      moodLabel = "no mood yet";
     }
 
     const getSleepLabel = (hours: number): string => {
@@ -81,7 +81,7 @@ const LastFeeling: React.FC<Props> = ({ hasLoggedToday, data }) => {
       <div className="left">
         <h2>
           <span>I’m feeling</span>
-          {useMood}
+          {useMood && useMood}
         </h2>
         {useMood && (
           <Image
