@@ -214,9 +214,7 @@ export default function Home() {
           <div ref={ref}>
             <Image
               src={`${
-                user || token
-                  ? user?.profilePic
-                  : "/assets/images/avatar-lisa.jpg"
+                user ? user.profilePic : "/assets/images/avatar-lisa.jpg"
               }`}
               width={40}
               height={40}
@@ -303,7 +301,6 @@ export default function Home() {
             logMood={logMood}
             enteries={moodEntries}
             setLogMood={setLogMood}
-            user={user}
           />
         </section>
         <section className="lastFeel">

@@ -47,14 +47,20 @@ const Settings: React.FC<SettingsProps> = ({
       setLoading(false);
       return;
     }
-    const existingPic = profilePic || "";
     const finalProfilePic =
       uploadedUrl ||
-      (existingPic.trim() !== ""
-        ? existingPic
+      (previewPic?.trim() !== ""
+        ? previewPic
         : "/assets/images/avatar-placeholder.svg");
+
+    if (previewPic?.startsWith("blob:") && !uploadedUrl) {
+      setError("Please wait for the image to finish uploading.");
+      setLoading(false);
+      return;
+    }
     try {
-      if (user?.isGuest) {
+      const token = localStorage.getItem("token");
+      if (!token) {
         dispatch(
           setGuestProfile({
             fullName: name,
@@ -62,8 +68,6 @@ const Settings: React.FC<SettingsProps> = ({
           })
         );
       } else {
-        const token = localStorage.getItem("token");
-
         await axios.patch(
           "/api/user/onboarded",
           {
