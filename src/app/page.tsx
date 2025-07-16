@@ -214,7 +214,9 @@ export default function Home() {
           <div ref={ref}>
             <Image
               src={`${
-                user ? user.profilePic : "/assets/images/avatar-lisa.jpg"
+                user || token
+                  ? user?.profilePic
+                  : "/assets/images/avatar-lisa.jpg"
               }`}
               width={40}
               height={40}
