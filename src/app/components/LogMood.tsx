@@ -158,7 +158,9 @@ const LogMood: React.FC<LogMoodProps> = ({ logMood, setLogMood, user }) => {
       if (!res.ok) throw new Error("Failed to save mood");
       dispatch(addMoodEntry(finalEntry));
       dispatch(updateMoodEntry(finalEntry));
-      dispatch(updateUserMoodEntries(finalEntry));
+      dispatch(
+        updateUserMoodEntries([...(user?.moodEntries ?? []), finalEntry])
+      );
     } else {
       dispatch(addMoodEntry(finalEntry));
       dispatch(updateMoodEntry(finalEntry));
