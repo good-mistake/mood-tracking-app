@@ -102,7 +102,6 @@ export default function Home() {
       alt: "very sad",
     },
   };
-  console.log(enteries);
 
   const moodEntries = token
     ? user?.moodEntries || []
@@ -202,7 +201,6 @@ export default function Home() {
       </div>
     );
   }
-  console.log(useMood);
   return (
     <div className="moodContainer">
       <main className="">
