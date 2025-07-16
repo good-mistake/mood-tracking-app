@@ -16,7 +16,7 @@ export default async function handler(
   try {
     const existing = await User.findOne({ email });
     if (existing)
-      return res.status(400).json({ message: "Email already in exist" });
+      return res.status(400).json({ message: "Email already exist" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
