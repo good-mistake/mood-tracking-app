@@ -30,7 +30,6 @@ export default function Home() {
   type MoodKey = keyof typeof moodConfig;
   const isValidMood = (mood: string): mood is MoodKey => mood in moodConfig;
   const name = fullName?.split(" ")[0] ?? "";
-
   const [openSetting, setOpenSetting] = useState(false);
   const guestMoodEntries = useSelector(
     (state: RootState) => state.user.user?.moodEntries
@@ -39,11 +38,11 @@ export default function Home() {
   const dispatch = useAppDispatch();
   const today = new Date().toDateString();
   const token = localStorage.getItem("token");
-
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     const initialize = async () => {
+      if (user) return;
       if (token) {
         await dispatch(fetchUserFromToken(token));
       } else if (!token) {
@@ -62,7 +61,7 @@ export default function Home() {
       setIsLoading(false);
     };
 
-    initialize();
+    initialize().finally(() => setIsLoading(false));
 
     const now = new Date();
     const millisTillMidnight =
@@ -73,7 +72,7 @@ export default function Home() {
     }, millisTillMidnight);
 
     return () => clearTimeout(timeout);
-  }, [dispatch, name]);
+  }, [user, dispatch, name]);
 
   const moodConfig = {
     veryHappy: {

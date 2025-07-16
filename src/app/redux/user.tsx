@@ -66,10 +66,10 @@ const user = createSlice({
       }
     },
     updateUserProfile(state, action) {
-      if (state.user) {
-        state.user.fullName = action.payload.fullName;
-        state.user.profilePic = action.payload.profilePic;
-      }
+      state.user = {
+        ...state.user,
+        ...action.payload,
+      };
     },
     setGuestProfile(state, action) {
       state.user = {
@@ -102,8 +102,11 @@ const user = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+
       .addCase(fetchUserFromToken.fulfilled, (state, action) => {
-        state.user = action.payload;
+        if (action.payload) {
+          state.user = action.payload;
+        }
       });
   },
 });

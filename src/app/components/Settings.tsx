@@ -23,47 +23,50 @@ const Settings: React.FC<SettingsProps> = ({
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  const fullName = useSelector((state: RootState) => state.user.user?.fullName);
+  const fullName = useSelector(
+    (state: RootState) => state.user.user?.fullName ?? ""
+  );
   const profilePic = useSelector(
     (state: RootState) => state.user.user?.profilePic
   );
   const [previewPic, setPreviewPic] = useState<string | null>(
     profilePic ?? null
   );
-  const [name, setName] = useState(fullName || "");
+  const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState("");
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (openSetting) {
+      setName(fullName || "");
+      setPreviewPic(profilePic || null);
+    }
+  }, [openSetting, fullName, profilePic]);
 
   const handleSave = async () => {
     setError("");
     setSuccess("");
     setLoading(true);
+    const token = localStorage.getItem("token");
+
+    const existingPic = profilePic || "";
+    const finalProfilePic =
+      uploadedUrl ||
+      (profilePic ? existingPic : "/assets/images/avatar-placeholder.svg");
 
     if (!name.trim()) {
       setError("Please fill your name");
       setLoading(false);
       return;
     }
-    const finalProfilePic =
-      uploadedUrl ||
-      (previewPic?.trim() !== ""
-        ? previewPic
-        : "/assets/images/avatar-placeholder.svg");
-
-    if (previewPic?.startsWith("blob:") && !uploadedUrl) {
-      setError("Please wait for the image to finish uploading.");
-      setLoading(false);
-      return;
-    }
     try {
-      const token = localStorage.getItem("token");
       if (!token) {
         dispatch(
           setGuestProfile({
             fullName: name,
+            name: fullName?.split(" ")[0] ?? "",
             profilePic: finalProfilePic,
           })
         );
@@ -119,6 +122,7 @@ const Settings: React.FC<SettingsProps> = ({
 
         const data = await res.json();
         setUploadedUrl(data.secure_url);
+        dispatch(updateUserProfile({ fullName, profilePic: data.secure_url }));
       } catch {
         setError("Image upload failed");
       }
@@ -128,14 +132,9 @@ const Settings: React.FC<SettingsProps> = ({
     }
   };
 
-  useEffect(() => {
-    if (openSetting) {
-      setName(fullName || "");
-      setPreviewPic(profilePic || null);
-    }
-  }, [openSetting, fullName, profilePic]);
   const resetForm = () => {
-    setPreviewPic(null);
+    setPreviewPic(profilePic ?? null);
+    setName(fullName || "");
     setError("");
     setLoading(false);
     setSuccess("");
@@ -231,9 +230,7 @@ const Settings: React.FC<SettingsProps> = ({
             </div>
           </div>
         </section>{" "}
-        {error && (
-          <h6 className="error">Something happend. Please try again.</h6>
-        )}{" "}
+        {error && <h6 className="error">{error}</h6>}{" "}
         {success && <h6 className="success">{success}</h6>}
         <button onClick={handleSave} disabled={loading}>
           {loading ? (
