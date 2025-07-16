@@ -37,6 +37,7 @@ const Settings: React.FC<SettingsProps> = ({
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const dispatch = useDispatch();
   useEffect(() => {
     if (openSetting) {
@@ -52,16 +53,41 @@ const Settings: React.FC<SettingsProps> = ({
     const token = localStorage.getItem("token");
 
     const existingPic = profilePic || "";
-    const finalProfilePic =
+    let finalProfilePic =
       uploadedUrl ||
       (profilePic ? existingPic : "/assets/images/avatar-placeholder.svg");
 
-    if (!name.trim()) {
-      setError("Please fill your name");
-      setLoading(false);
-      return;
-    }
     try {
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+
+        const res = await fetch("/api/imgUpload", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!res.ok) throw new Error("Upload failed");
+
+        const data = await res.json();
+        setUploadedUrl(data.secure_url);
+        finalProfilePic = data.secure_url;
+
+        if (user) {
+          dispatch(
+            updateUserProfile({ fullName, profilePic: data.secure_url })
+          );
+        } else {
+          dispatch(setGuestProfile({ profilePic: data.secure_url }));
+        }
+      }
+
+      if (!name.trim()) {
+        setError("Please fill your name");
+        setLoading(false);
+        return;
+      }
+
       if (!token) {
         dispatch(
           setGuestProfile({
@@ -103,33 +129,13 @@ const Settings: React.FC<SettingsProps> = ({
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     const localUrl = URL.createObjectURL(file);
     setPreviewPic(localUrl);
-    if (user) {
-      const formData = new FormData();
-      formData.append("file", file);
-      try {
-        const res = await fetch("/api/imgUpload", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!res.ok) throw new Error("Upload failed");
-
-        const data = await res.json();
-        setUploadedUrl(data.secure_url);
-        dispatch(updateUserProfile({ fullName, profilePic: data.secure_url }));
-      } catch {
-        setError("Image upload failed");
-      }
-    } else {
-      dispatch(setGuestProfile({ profilePic: localUrl }));
-      setUploadedUrl(localUrl);
-    }
+    setSelectedFile(file);
   };
 
   const resetForm = () => {
