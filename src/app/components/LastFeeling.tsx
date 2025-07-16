@@ -75,7 +75,6 @@ const LastFeeling: React.FC<Props> = ({ hasLoggedToday, data }) => {
       setQuote(randomQuote);
     }
   }, [lastEntry, moodQuotes]);
-  console.log(lastEntry);
   return (
     <div className={`lastEntry ${hasLoggedToday ? "show" : "hide"}`}>
       <div className="left">
