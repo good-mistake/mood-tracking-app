@@ -36,7 +36,6 @@ export default function MoodSleepManualChart() {
   const sortedEntries = [...allEntries].sort(
     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   );
-  console.log(enteries);
   let last11Days: Date[];
 
   if (token) {
