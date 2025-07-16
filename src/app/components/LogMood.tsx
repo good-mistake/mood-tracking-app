@@ -6,7 +6,7 @@ import { MoodEntry, User } from "../utils/types";
 import { updateMoodEntry } from "../redux/moodSlice";
 import Lottie from "lottie-react";
 import LoadingBtn from "../LoadingBtn.json";
-
+import { updateUserMoodEntries } from "../redux/user";
 interface LogMoodProps {
   logMood: boolean;
   setLogMood: (value: boolean) => void;
@@ -144,6 +144,7 @@ const LogMood: React.FC<LogMoodProps> = ({ logMood, setLogMood, user }) => {
       ...entry,
       createdAt: new Date().toISOString(),
     };
+    console.log(finalEntry, "finalEntry");
     const token = localStorage.getItem("token");
     if (token) {
       const res = await fetch("/api/mood", {
@@ -157,6 +158,7 @@ const LogMood: React.FC<LogMoodProps> = ({ logMood, setLogMood, user }) => {
       if (!res.ok) throw new Error("Failed to save mood");
       dispatch(addMoodEntry(finalEntry));
       dispatch(updateMoodEntry(finalEntry));
+      dispatch(updateUserMoodEntries(finalEntry));
     } else {
       dispatch(addMoodEntry(finalEntry));
       dispatch(updateMoodEntry(finalEntry));
