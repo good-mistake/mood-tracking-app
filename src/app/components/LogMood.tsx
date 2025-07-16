@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { addMoodEntry } from "../redux/moodSlice";
 import { useDispatch } from "react-redux";
-import { MoodEntry } from "../utils/types";
+import { MoodEntry, User } from "../utils/types";
 import { updateMoodEntry } from "../redux/moodSlice";
 import Lottie from "lottie-react";
 import LoadingBtn from "../LoadingBtn.json";
@@ -11,8 +11,9 @@ interface LogMoodProps {
   logMood: boolean;
   setLogMood: (value: boolean) => void;
   enteries: MoodEntry[];
+  user: User | null;
 }
-const LogMood: React.FC<LogMoodProps> = ({ logMood, setLogMood }) => {
+const LogMood: React.FC<LogMoodProps> = ({ logMood, setLogMood, user }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const [step, setStep] = useState(0);
@@ -110,9 +111,8 @@ const LogMood: React.FC<LogMoodProps> = ({ logMood, setLogMood }) => {
         date: new Date().toISOString(),
         createdAt: new Date().toISOString(),
       };
-      const token = localStorage.getItem("token");
       try {
-        if (!token) dispatch(addMoodEntry(entry));
+        if (!user) dispatch(addMoodEntry(entry));
         else await saveEntry(entry);
         setLogMood(false);
         resetForm();

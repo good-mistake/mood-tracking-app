@@ -300,6 +300,7 @@ export default function Home() {
             logMood={logMood}
             enteries={moodEntries}
             setLogMood={setLogMood}
+            user={user}
           />
         </section>
         <section className="lastFeel">
