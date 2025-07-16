@@ -195,9 +195,9 @@ body {
           padding: 48px 40px;
           position: relative;
           min-width: 600px;
-          @media (max-height: 500px) {
+          @media (max-height: 710px) {
             margin-top: 0.6rem;
-            scale: 0.7;
+            scale: 0.55;
           }
           > div {
             text-align: right;
@@ -365,8 +365,8 @@ body {
             &.logMoodactive {
               scale: 1;
               opacity: 1;
-              @media (max-height: 500px) {
-                scale: 0.5;
+              @media (max-height: 710px) {
+                scale: 0.55;
               }
             }
             &.logMoodinactive {
