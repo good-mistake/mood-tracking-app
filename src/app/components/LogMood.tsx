@@ -144,7 +144,6 @@ const LogMood: React.FC<LogMoodProps> = ({ logMood, setLogMood, user }) => {
       ...entry,
       createdAt: new Date().toISOString(),
     };
-    console.log(finalEntry, "finalEntry");
     const token = localStorage.getItem("token");
     if (token) {
       const res = await fetch("/api/mood", {
