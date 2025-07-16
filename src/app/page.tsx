@@ -44,9 +44,9 @@ export default function Home() {
     const token = localStorage.getItem("token");
 
     const initialize = async () => {
-      if (token && !user) {
+      if (token) {
         await dispatch(fetchUserFromToken(token));
-      } else if (!user) {
+      } else if (!token) {
         dispatch(
           setGuestProfile({
             fullName: "Lisa Maria",
