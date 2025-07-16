@@ -819,10 +819,9 @@ body {
                 @include text-preset-7;
                 color: var(--color-neutral-900);
                 font-weight: 400;
-                @media (max-width: 600px) {
-                  display: flex;
-                  align-items: center;
-                }
+                display: flex;
+                align-items: baseline;
+
                 img {
                   margin-right: 8px;
                 }
@@ -874,6 +873,7 @@ body {
                 }
                 p {
                   color: var(--color-neutral-0);
+
                   img {
                     filter: brightness(0) invert(1);
                   }
