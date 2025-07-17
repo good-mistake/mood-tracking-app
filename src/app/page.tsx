@@ -212,9 +212,11 @@ export default function Home() {
           />
           <div ref={ref}>
             <Image
-              src={`${
-                user ? user.profilePic : "/assets/images/avatar-lisa.jpg"
-              }`}
+              src={
+                user?.profilePic && user.profilePic.trim() !== ""
+                  ? user.profilePic
+                  : "/assets/images/avatar-placeholder.svg"
+              }
               width={40}
               height={40}
               style={{ borderRadius: "50%" }}
